@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Shopping cart
+{% endblock %}
+
+{% block body %}
+
+{% if cart1 < 1 and cart2 < 1%}
+<a class="nav-link" href="/products"><h4> There are no items to show. Buy some today!</h4></a>
+{% else %}
+
+<table class="table table-hover" :hover {
+    background-color=#000000;
+}>
+    <thead class="text-dark">
+        <tr>
+            <th>No.</th>
+            <th>Item</th>
+            <th>Item Price</th>
+            <th>Qty</th>
+            <th>Total Price</th>
+            <th>remove?</th>
+        </tr>
+    </thead>
+    {% for product in products %}
+    <tbody class="text-dark">
+        <tr>
+                {% if product.id == 1 %}
+                {% set qty = session["cart1"] %}
+                {% else %}
+                {% set qty = session["cart2"] %}
+                {% endif %}
+                {% if qty != 0 %}
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>${{ product.price }}</td>
+            <td>{{ qty }}</td>
+            <td>${{ (product.price * qty) }}</td>
+            <td>
+                <a href="/removecart/{{product.id}}">Delete</a>
+            </td>
+                {% endif %}
+        </tr>
+    </tbody>
+    {% endfor %}
+    
+        <tr>
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total</td>
+            <td>${{ total }}</td>
+        </tr>        
+</table>
+<div style="text-align:right">
+    <button type="button" class="btn btn-primary"><a href="/products" style="color: #ffffff" text-decoration:none>Continue Shopping</a></button>
+    <button type="button" class="btn btn-primary"><a href="/checkout" style="color: #ffffff" text-decoration:none>Checkout</a></button>
+</div>
+
+{% endif %}
+
+{% endblock %}
